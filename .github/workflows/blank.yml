@@ -15,16 +15,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Baixar repositorio
         uses: actions/checkout@v4
 
-      - name: Java 17
+      - name: Configurar Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - name: Gradle 8.7
+      - name: Extrair projeto Soundboard
+        run: |
+          unzip -o Soundboard-Android-v0.2.zip \
+            -x '.github/workflows/*' 'README.md' -d .
+          echo "Arquivos extraidos:"
+          ls -la
+          test -f settings.gradle.kts
+          test -f app/build.gradle.kts
+
+      - name: Configurar Gradle 8.7
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
